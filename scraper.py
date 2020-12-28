@@ -10,5 +10,3 @@ soup = BeautifulSoup(page.content, 'html.parser')
 game = soup.find(id='11343535_543_to')
 
 print(game)
-
-
