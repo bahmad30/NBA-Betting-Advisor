@@ -7,6 +7,15 @@ page = requests.get(url)
 
 soup = BeautifulSoup(page.content, 'html.parser')
 
-game = soup.find(id='11343535_543_to')
+results = soup.find(id='accordionBets3')
 
-print(game)
+# iterable containing main games
+games = results.find_all('div', class_='game-line py-3')
+
+for game in games:
+    # iterable containing buttons for each game
+    all_game_buttons = game.find_all('button', class_='lines-odds')
+    #
+    game_info = all_game_buttons[5]
+    print(game_info)
+    print('------------new game-------------')
