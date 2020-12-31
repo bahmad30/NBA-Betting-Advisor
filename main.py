@@ -2,6 +2,7 @@ from operator import itemgetter
 import pandas as pd
 import scraper
 
+
 # reads data and utilizes web scraper to create prediction for total points
 def main():
     data = pd.read_csv(r'/Users/bilaalahmad/Desktop/clean_nba_data.csv', encoding='utf8')
@@ -9,7 +10,7 @@ def main():
     pd.to_numeric(data['PH'])
     matchups = scraper.main()
 
-    # [team1, team2, total, avg_pts, diff]
+    # [team1, team2, total, avg_pts, diff, o/u, gp, conf]
     info = []
     # calculates avg points from last
     for index, matchup in enumerate(matchups):
@@ -17,14 +18,52 @@ def main():
         team2 = str(matchup[1])
         total = int(matchup[2])
         relevant_games = data[((data['Visitor'] == team1) | (data['Home'] == team1))
-                                  & ((data['Visitor'] == team2) | (data['Home'] == team2))]
-        avg_pts = (relevant_games['PV'].sum() + relevant_games['PH'].sum()) / relevant_games['PV'].count()
-        avg_pts = round(avg_pts, 3)
-        diff = abs(avg_pts - total)
-        info.append([team1, team2, total, avg_pts, diff])
+                              & ((data['Visitor'] == team2) | (data['Home'] == team2))]
+        games_played = relevant_games['PV'].count()
+        avg_pts = (relevant_games['PV'].sum() + relevant_games['PH'].sum()) / games_played
+        avg_pts = round(avg_pts, 1)
+        if avg_pts > total:
+            ou = 'O'
+        else:
+            ou = 'U'
+        diff = round(abs(avg_pts - total), 1)
+        conf = confidence(games_played, diff)
+        info.append([team1, team2, total, avg_pts, diff, ou, games_played, conf])
 
+    ranker(info)
+
+
+# gives a confidence rating up to 10 for over/under based on games played and diff
+def confidence(games_played, diff):
+    rating = 0
+    # give 1-5 rating based on playoff opp, div opp, non-div opp
+    if games_played > 4:
+        rating += 5
+    elif games_played == 4:
+        rating += 4
+    elif games_played == 3:
+        rating += 3
+    else:
+        rating += 2
+    # give 1-5 rating based on diff
+    if diff >= 14:
+        rating += 5
+    elif 10 <= diff < 14:
+        rating += 4
+    elif 7 <= diff < 10:
+        rating += 3
+    elif 4 <= diff < 7:
+        rating += 2
+    else:
+        rating += 1
+    return rating
+
+
+def ranker(info):
+    info = sorted(info, key=itemgetter(7), reverse=True)
     for index, game in enumerate(info, start=1):
-        print(f'GAME {index}: {game[0]} vs {game[1]},  TOTAL: {game[2]},  PREDICTED: {game[3]},  DIFF: {game[4]}')
+        print(f'G{index}: {game[0]} vs {game[1]},  TOTAL: {game[2]},  PREDICTED: {game[3]},  DIFF: {game[4]}'
+              f' {game[5]},  GP: {game[6]},  CONF: {game[7]}')
 
 
 if __name__ == '__main__':
