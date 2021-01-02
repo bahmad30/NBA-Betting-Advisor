@@ -2,7 +2,7 @@ import tweepy
 import keys
 
 # tweet if true
-tweet_it = False
+tweet_it = True
 
 
 # formats and posts tweet
@@ -37,8 +37,12 @@ def main(tweet_data):
                 f'This pick\'s confidence rating is {wording[2]} {game[7]}/10.'
 
         if tweet_it:
-            api.update_status(tweet)
-            print(f'TWEETED: {tweet}')
+            try:
+                api.update_status(tweet)
+                print(f'TWEETED: {tweet}')
+            except tweepy.error.TweepError as err:
+                print(f'ERROR: {err}')
+                print(f'NOT TWEETED: {tweet}')
         else:
             print(f'NOT TWEETED: {tweet}')
 
