@@ -5,3 +5,5 @@ This bot scrapes real-time NBA over/under bets from the web, and uses data from 
 Data sources:<br />
 Over/under bets are from https://mybookie.ag/sportsbook/nba/<br />
 2019-2020 NBA data is from https://www.basketball-reference.com/
+
+Project made entirely by Bilaal Ahmad
