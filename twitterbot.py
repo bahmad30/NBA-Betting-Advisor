@@ -40,7 +40,7 @@ def main(tweet_data):
             api.update_status(tweet)
             print(f'TWEETED: {tweet}')
         else:
-            print(tweet)
+            print(f'NOT TWEETED: {tweet}')
 
 
 # drop .0 from a number
