@@ -2,6 +2,9 @@ from operator import itemgetter
 import pandas as pd
 import scraper
 
+# post to twitter if program is run - in progress
+post_on_run = False
+
 
 # reads data and utilizes web scraper to create prediction for total points
 def main():
@@ -16,7 +19,7 @@ def main():
     for index, matchup in enumerate(matchups):
         team1 = str(matchup[0])
         team2 = str(matchup[1])
-        total = int(matchup[2])
+        total = float(matchup[2])
         relevant_games = data[((data['Visitor'] == team1) | (data['Home'] == team1))
                               & ((data['Visitor'] == team2) | (data['Home'] == team2))]
         games_played = relevant_games['PV'].count()
@@ -46,13 +49,13 @@ def confidence(games_played, diff):
     else:
         rating += 2
     # give 1-5 rating based on diff
-    if diff >= 14:
+    if diff >= 13.5:
         rating += 5
-    elif 10 <= diff < 14:
+    elif 9.5 <= diff < 13.5:
         rating += 4
-    elif 7 <= diff < 10:
+    elif 6.5 <= diff < 9.5:
         rating += 3
-    elif 4 <= diff < 7:
+    elif 4.5 <= diff < 6.5:
         rating += 2
     else:
         rating += 1

@@ -24,6 +24,8 @@ def main():
         team1 = game_info[game_info.find('data-team') + 11: game_info.find('data-team-vs') - 2]
         team2 = game_info[game_info.find('data-team-vs') + 14: game_info.find('data-wager') - 2]
         total = int(game_info[game_info.find('U ') + 2: game_info.find('U ') + 5])
+        if (game_info[game_info.find('U ') + 5: game_info.find('U ') + 6]) == '½':
+            total += 0.5
         # print(f'GAME {index}: {team2} @ {team1}, TOTAL: {total}')
         info.append([team1, team2, total])
 
