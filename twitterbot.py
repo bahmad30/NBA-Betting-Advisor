@@ -2,7 +2,7 @@ import tweepy
 import keys
 
 # tweet if true
-tweet_it = True
+tweet_it = False
 
 
 # formats and posts tweet
@@ -41,7 +41,10 @@ def main(tweet_data):
                 api.update_status(tweet)
                 print(f'TWEETED: {tweet}')
             except tweepy.error.TweepError as err:
-                print(f'ERROR: {err}')
+                print(f'DUPLICATE ERROR: {err}')
+                print(f'NOT TWEETED: {tweet}')
+            except Exception as e:
+                print(f'ERROR: {e}')
                 print(f'NOT TWEETED: {tweet}')
         else:
             print(f'NOT TWEETED: {tweet}')
