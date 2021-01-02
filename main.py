@@ -1,9 +1,13 @@
 from operator import itemgetter
 import pandas as pd
 import scraper
+import twitterbot
 
-# post to twitter if program is run - in progress
-post_on_run = False
+# request to post to twitter if program is run
+activate_tbot = True
+
+# minimum rating to be posted on twitter
+tweet_threshold = 7
 
 
 # reads data and utilizes web scraper to create prediction for total points
@@ -33,7 +37,22 @@ def main():
         conf = confidence(games_played, diff)
         info.append([team1, team2, total, avg_pts, diff, ou, games_played, conf])
 
-    ranker(info)
+    # sort data
+    info = ranker(info)
+    # filter based on tweet threshold
+    tweet_data = []
+    for game in info:
+        if game[7] >= tweet_threshold:
+            tweet_data.append(game)
+    print('------PICKS------')
+    for index, game in enumerate(tweet_data, start=1):
+        print(f'G{index}: {game[0]} vs {game[1]},  TOTAL: {game[2]},  PREDICTED: {game[3]},  DIFF: {game[4]}'
+              f' {game[5]},  GP: {game[6]},  CONF: {game[7]}')
+
+    # post to twitter
+    if activate_tbot:
+        print('------TWEETS------')
+        twitterbot.main(tweet_data)
 
 
 # gives a confidence rating up to 10 for over/under based on games played and diff
@@ -64,9 +83,11 @@ def confidence(games_played, diff):
 
 def ranker(info):
     info = sorted(info, key=itemgetter(7), reverse=True)
+    print('------MATCHUPS------')
     for index, game in enumerate(info, start=1):
         print(f'G{index}: {game[0]} vs {game[1]},  TOTAL: {game[2]},  PREDICTED: {game[3]},  DIFF: {game[4]}'
               f' {game[5]},  GP: {game[6]},  CONF: {game[7]}')
+    return info
 
 
 if __name__ == '__main__':
