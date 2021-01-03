@@ -68,13 +68,13 @@ def confidence(games_played, diff):
     else:
         rating += 2
     # give 1-5 rating based on diff
-    if diff >= 13.5:
+    if diff >= 14.5:
         rating += 5
-    elif 9.5 <= diff < 13.5:
+    elif 10 <= diff < 14.5:
         rating += 4
-    elif 6.5 <= diff < 9.5:
+    elif 7 <= diff < 10:
         rating += 3
-    elif 4.5 <= diff < 6.5:
+    elif 4.5 <= diff < 7:
         rating += 2
     else:
         rating += 1

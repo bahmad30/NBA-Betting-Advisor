@@ -10,7 +10,8 @@ def main(tweet_data):
     auth = tweepy.OAuthHandler(keys.CONSUMER_KEY, keys.CONSUMER_SECRET)
     auth.set_access_token(keys.ACCESS_KEY, keys.ACCESS_SECRET)
     api = tweepy.API(auth)
-
+    # most recent post = highest confidence
+    tweet_data.reverse()
     for game in tweet_data:
         # clean and format data
         if game[5] == 'O':
