@@ -26,6 +26,8 @@ def main():
         total = float(matchup[2])
         relevant_games = data[((data['Visitor'] == team1) | (data['Home'] == team1))
                               & ((data['Visitor'] == team2) | (data['Home'] == team2))]
+        print(f'------{team1.upper()} v {team2.upper()} DATA------')
+        print(relevant_games)
         games_played = relevant_games['PV'].count()
         avg_pts = (relevant_games['PV'].sum() + relevant_games['PH'].sum()) / games_played
         avg_pts = round(avg_pts, 1)

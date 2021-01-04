@@ -13,29 +13,38 @@ def main(tweet_data):
     # most recent post = highest confidence
     tweet_data.reverse()
     for game in tweet_data:
-        # clean and format data
+        # clean and format
         if game[5] == 'O':
             ou = ['over', 'less']
         else:
             ou = ['under', 'more']
         if game[7] == 7:
-            wording = ['Consider taking', '.', 'a solid']
+            wording = ['Consider taking', '.', '']
         elif game[7] == 8:
-            wording = ['Take', '!', 'a noteworthy']
+            wording = ['Take', '!', 'a solid ']
         elif game[7] == 9:
-            wording = ['Take', '!', 'an outstanding']
+            wording = ['Take', '!', 'an outstanding ']
         else:
-            wording = ['Definitely take', '!', 'a rare, perfect']
+            wording = ['Definitely take', '!', 'a rare, perfect ']
+        if game[4] > 20:
+            wording2 = 'significantly '
+        else:
+            wording2 = ''
+        if game[6] > 4:
+            wording3 = ' This was a playoff matchup last year, and the'
+        else:
+            wording3 = ' The'
 
         team1 = game[0].split()[len(game[0].split()) - 1]
         team2 = game[1].split()[len(game[1].split()) - 1]
         total = dropzero(game[2])
         diff = dropzero(game[4])
         pred = dropzero(game[3])
+
         # tweet body
-        tweet = f'{wording[0]} the {ou[0]} for the {team1} vs {team2} game{wording[1]} The current total is {total}, ' \
-                f'which is {diff} {ou[1]} than our predicted total. ' \
-                f'This pick\'s confidence rating is {wording[2]} {game[7]}/10.'
+        tweet = f'{wording[0]} the {ou[0]} for the {team1} vs {team2} game{wording[1]}{wording3} current total is {total}, ' \
+                f'which is {wording2}{ou[1]} than our predicted total. ' \
+                f'This pick\'s confidence rating is {wording[2]}{game[7]}/10.'
 
         if tweet_it:
             try:
