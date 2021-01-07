@@ -1,5 +1,7 @@
 # NBA Over/Under Bot
 
+Twitter: https://twitter.com/OverUnderBot
+
 This bot scrapes real-time NBA over/under bets from the web, and uses data from the 2019-2020 NBA season to determine the favorability of a certain over/under using a simple predicative algorithm. Each over/under is analyzed and given a 0-10 confidence rating based on the matchup data and number of data points. If an over/under achieves a confidence rating of at least 7/10, it is considered favorable and automatically posted to Twitter. The success rate of this bot is pending.
 
 Data sources:<br />
